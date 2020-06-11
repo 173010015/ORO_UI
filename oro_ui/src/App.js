@@ -1,18 +1,23 @@
 import React,{ Component } from 'react';
-import { Route} from 'react-router-dom';
-import Login from './components/UserComponent/Login';
+import { Router } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/styles';
+import { createBrowserHistory } from 'history';
+import 'react-perfect-scrollbar/dist/css/styles.css';
+import './assets/scss/index.scss';
+import Routes from './Routes';
+import theme from './theme';
+
+const browserHistory = createBrowserHistory();
 
 
-
-class App extends Component{
-  render(){
+export default class App extends Component {
+  render() {
     return (
-      <div>
-      <Route path="/oro/login" exact component={Login}/>
-      </div>
+      <ThemeProvider theme={theme}>
+        <Router history={browserHistory}>
+          <Routes />
+        </Router>
+      </ThemeProvider>
     );
   }
-
 }
-
-export default App;

@@ -16,11 +16,11 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 //import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 
 const schema = {
-  email: {
+  phone: {
     presence: { allowEmpty: false, message: 'is required' },
-    email: true,
+   // phone: true,
     length: {
-      maximum: 64
+      is: 10
     }
   },
   password: {
@@ -254,16 +254,16 @@ const SignIn = props => {
                 </Typography>
                 <TextField
                   className={classes.textField}
-                  error={hasError('email')}
+                  error={hasError('phone')}
                   fullWidth
                   helperText={
-                    hasError('email') ? formState.errors.email[0] : null
+                    hasError('phone') ? formState.errors.phone[0] : null
                   }
-                  label="Email address"
-                  name="email"
+                  label="Phone Number"
+                  name="phone"
                   onChange={handleChange}
-                  type="text"
-                  value={formState.values.email || ''}
+                  type="tel"
+                  value={formState.values.phone || ''}
                   variant="outlined"
                 />
                 <TextField

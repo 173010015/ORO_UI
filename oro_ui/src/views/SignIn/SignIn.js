@@ -13,12 +13,9 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-//import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
-
 const schema = {
   phone: {
     presence: { allowEmpty: false, message: 'is required' },
-   // phone: true,
     length: {
       is: 10
     }

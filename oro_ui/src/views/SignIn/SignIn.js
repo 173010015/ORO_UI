@@ -14,7 +14,7 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const schema = {
-  phone: {
+  phoneNo: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
       is: 10
@@ -168,6 +168,16 @@ const SignIn = props => {
   };
 
   const handleSignIn = event => {
+    console.log(formState.values.phone);
+    let apiUrl = "http://localhost:8080/login";
+    let headers =new Headers();
+    headers.set('Content-Type','application/json');
+    fetch(apiUrl,{
+      method:'POST',
+      headers: headers,
+      body : JSON.stringify(formState.values)
+    }).then(response => response.json())
+    .then(json => console.log(json));
     event.preventDefault();
     history.push('/');
   };
@@ -192,7 +202,7 @@ const SignIn = props => {
                 className={classes.quoteText}
                 variant="h1"
               >
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
+                Hella Bikram Cosby sweater McSweeney's, salvia kitsch before
                 they sold out High Life.
               </Typography>
               <div className={classes.person}>
@@ -251,16 +261,16 @@ const SignIn = props => {
                 </Typography>
                 <TextField
                   className={classes.textField}
-                  error={hasError('phone')}
+                  error={hasError('phoneNo')}
                   fullWidth
                   helperText={
-                    hasError('phone') ? formState.errors.phone[0] : null
+                    hasError('phoneNo') ? formState.errors.phoneNo[0] : null
                   }
                   label="Phone Number"
-                  name="phone"
+                  name="phoneNo"
                   onChange={handleChange}
                   type="tel"
-                  value={formState.values.phone || ''}
+                  value={formState.values.phoneNo || ''}
                   variant="outlined"
                 />
                 <TextField

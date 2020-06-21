@@ -6,6 +6,7 @@ import { Minimal as MinimalLayout } from './layouts';
 
 import {
   SignIn as SignInView,
+  SignUp as SignUpView
 } from './views';
 
 const Routes = () => {
@@ -21,6 +22,12 @@ const Routes = () => {
         exact
         layout={MinimalLayout}
         path="/sign-in"
+      />
+      <RouteWithLayout
+        component={SignUpView}
+        exact
+        layout={MinimalLayout}
+        path="/sign-up"
       />
     </Switch>
   );

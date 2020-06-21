@@ -9,15 +9,30 @@ import {
   IconButton,
   TextField,
   Link,
+  FormHelperText,
+  Checkbox,
   Typography
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const schema = {
-  phoneNo: {
+  firstName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
-      is: 10
+      maximum: 32
+    }
+  },
+  lastName: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 32
+    }
+  },
+ /* email: {
+    presence: { allowEmpty: false, message: 'is required' },
+    email: true,
+    length: {
+      maximum: 64
     }
   },
   password: {
@@ -25,7 +40,11 @@ const schema = {
     length: {
       maximum: 128
     }
-  }
+  },
+  policy: {
+    presence: { allowEmpty: false, message: 'is required' },
+    checked: true
+  }*/
 };
 
 const useStyles = makeStyles(theme => ({
@@ -105,24 +124,23 @@ const useStyles = makeStyles(theme => ({
   title: {
     marginTop: theme.spacing(3)
   },
-  socialButtons: {
-    marginTop: theme.spacing(3)
-  },
-  socialIcon: {
-    marginRight: theme.spacing(1)
-  },
-  sugestion: {
-    marginTop: theme.spacing(2)
-  },
   textField: {
     marginTop: theme.spacing(2)
   },
-  signInButton: {
+  policy: {
+    marginTop: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center'
+  },
+  policyCheckbox: {
+    marginLeft: '-14px'
+  },
+  signUpButton: {
     margin: theme.spacing(2, 0)
   }
 }));
 
-const SignIn = props => {
+const SignUp = props => {
   const { history } = props;
 
   const classes = useStyles();
@@ -144,10 +162,6 @@ const SignIn = props => {
     }));
   }, [formState.values]);
 
-  const handleBack = () => {
-    history.goBack();
-  };
-
   const handleChange = event => {
     event.persist();
 
@@ -167,34 +181,13 @@ const SignIn = props => {
     }));
   };
 
-  const handleSignIn = event => {
-    let apiUrl = "http://localhost:8080/login";
-    let headers =new Headers();
-    headers.set('Content-Type','application/json');
-    fetch(apiUrl,{
-      method:'POST',
-      headers: headers,
-      body : JSON.stringify(formState.values)
-    }).then(function(response){
-          if(response.ok){
-          }
-          else{
-            throw new Error("something went wrong...");
-          }
-    })
-    .then(data=>{
-      if(data.status === "OK"){
-        history.push('/dashboard');
-        console.log("how");
-      }
-      else{
-        console.log("Jow");
-      }
-    })
-   // .then(response => response.json())
-   // .then(json => console.log(json));
+  const handleBack = () => {
+    history.goBack();
+  };
+
+  const handleSignUp = event => {
     event.preventDefault();
-   // history.push('/');
+    history.push('/');
   };
 
   const hasError = field =>
@@ -217,7 +210,7 @@ const SignIn = props => {
                 className={classes.quoteText}
                 variant="h1"
               >
-                Hella Bikram Cosby sweater McSweeney's, salvia kitsch before
+                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
                 they sold out High Life.
               </Typography>
               <div className={classes.person}>
@@ -252,40 +245,60 @@ const SignIn = props => {
             <div className={classes.contentBody}>
               <form
                 className={classes.form}
-                onSubmit={handleSignIn}
+                onSubmit={handleSignUp}
               >
                 <Typography
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  Create new account
                 </Typography>
                 <Typography
                   color="textSecondary"
                   gutterBottom
                 >
-                  Sign in with social media
-                </Typography>
-                <Typography
-                  align="center"
-                  className={classes.sugestion}
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  or login with email address
+                  Use your email to create new account
                 </Typography>
                 <TextField
                   className={classes.textField}
-                  error={hasError('phoneNo')}
+                  error={hasError('firstName')}
                   fullWidth
                   helperText={
-                    hasError('phoneNo') ? formState.errors.phoneNo[0] : null
+                    hasError('firstName') ? formState.errors.firstName[0] : null
                   }
-                  label="Phone Number"
-                  name="phoneNo"
+                  label="First name"
+                  name="firstName"
                   onChange={handleChange}
-                  type="tel"
-                  value={formState.values.phoneNo || ''}
+                  type="text"
+                  value={formState.values.firstName || ''}
+                  variant="outlined"
+                />
+                <TextField
+                  className={classes.textField}
+                  error={hasError('lastName')}
+                  fullWidth
+                  helperText={
+                    hasError('lastName') ? formState.errors.lastName[0] : null
+                  }
+                  label="Last name"
+                  name="lastName"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.values.lastName || ''}
+                  variant="outlined"
+                />
+                <TextField
+                  className={classes.textField}
+                  error={hasError('email')}
+                  fullWidth
+                  helperText={
+                    hasError('email') ? formState.errors.email[0] : null
+                  }
+                  label="Email address"
+                  name="email"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.values.email || ''}
                   variant="outlined"
                 />
                 <TextField
@@ -302,8 +315,38 @@ const SignIn = props => {
                   value={formState.values.password || ''}
                   variant="outlined"
                 />
+                <div className={classes.policy}>
+                  <Checkbox
+                    checked={formState.values.policy || false}
+                    className={classes.policyCheckbox}
+                    color="primary"
+                    name="policy"
+                    onChange={handleChange}
+                  />
+                  <Typography
+                    className={classes.policyText}
+                    color="textSecondary"
+                    variant="body1"
+                  >
+                    I have read the{' '}
+                    <Link
+                      color="primary"
+                      component={RouterLink}
+                      to="#"
+                      underline="always"
+                      variant="h6"
+                    >
+                      Terms and Conditions
+                    </Link>
+                  </Typography>
+                </div>
+                {hasError('policy') && (
+                  <FormHelperText error>
+                    {formState.errors.policy[0]}
+                  </FormHelperText>
+                )}
                 <Button
-                  className={classes.signInButton}
+                  className={classes.signUpButton}
                   color="primary"
                   disabled={!formState.isValid}
                   fullWidth
@@ -311,19 +354,19 @@ const SignIn = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Sign in now
+                  Sign up now
                 </Button>
                 <Typography
                   color="textSecondary"
                   variant="body1"
                 >
-                  Don't have an account?{' '}
+                  Have an account?{' '}
                   <Link
                     component={RouterLink}
-                    to="/sign-up"
+                    to="/sign-in"
                     variant="h6"
                   >
-                    Sign up
+                    Sign in
                   </Link>
                 </Typography>
               </form>
@@ -335,8 +378,8 @@ const SignIn = props => {
   );
 };
 
-SignIn.propTypes = {
+SignUp.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignIn);
+export default withRouter(SignUp);

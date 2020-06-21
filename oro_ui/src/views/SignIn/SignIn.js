@@ -3,6 +3,7 @@ import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
+import Alert from '@material-ui/lab/Alert';
 import {
   Grid,
   Button,
@@ -129,6 +130,7 @@ const SignIn = props => {
 
   const [formState, setFormState] = useState({
     isValid: false,
+    isValidLogin: true,
     values: {},
     touched: {},
     errors: {}
@@ -177,6 +179,7 @@ const SignIn = props => {
       body : JSON.stringify(formState.values)
     }).then(function(response){
           if(response.ok){
+            return response.json();
           }
           else{
             throw new Error("something went wrong...");
@@ -188,13 +191,14 @@ const SignIn = props => {
         console.log("how");
       }
       else{
+        setFormState(formState =>({
+          ...formState,
+          isValidLogin: false
+        }));
         console.log("Jow");
       }
     })
-   // .then(response => response.json())
-   // .then(json => console.log(json));
     event.preventDefault();
-   // history.push('/');
   };
 
   const hasError = field =>
@@ -264,7 +268,7 @@ const SignIn = props => {
                   color="textSecondary"
                   gutterBottom
                 >
-                  Sign in with social media
+                  Sign in with your Phone Number
                 </Typography>
                 <Typography
                   align="center"
@@ -272,7 +276,7 @@ const SignIn = props => {
                   color="textSecondary"
                   variant="body1"
                 >
-                  or login with email address
+                  {formState.isValidLogin ? null : <Alert severity="error">Invalid Credentials. Please check</Alert>}
                 </Typography>
                 <TextField
                   className={classes.textField}

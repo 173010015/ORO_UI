@@ -2,11 +2,12 @@ import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithLayout } from './components';
-import { Minimal as MinimalLayout } from './layouts';
+import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 
 import {
   SignIn as SignInView,
-  SignUp as SignUpView
+  SignUp as SignUpView,
+  Dashboard as DashboardView
 } from './views';
 
 const Routes = () => {
@@ -28,6 +29,12 @@ const Routes = () => {
         exact
         layout={MinimalLayout}
         path="/sign-up"
+      />
+       <RouteWithLayout
+        component={DashboardView}
+        exact
+        layout={MainLayout}
+        path="/dashboard"
       />
     </Switch>
   );

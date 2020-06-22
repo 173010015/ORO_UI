@@ -7,12 +7,10 @@ import Alert from '@material-ui/lab/Alert';
 import {
   Grid,
   Button,
-  IconButton,
   TextField,
   Link,
   Typography
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const schema = {
   phoneNo: {
@@ -146,15 +144,13 @@ const SignIn = props => {
     }));
   }, [formState.values]);
 
-  const handleBack = () => {
-    history.goBack();
-  };
 
   const handleChange = event => {
     event.persist();
 
     setFormState(formState => ({
       ...formState,
+      isValidLogin: true,
       values: {
         ...formState.values,
         [event.target.name]:
@@ -248,11 +244,6 @@ const SignIn = props => {
           xs={12}
         >
           <div className={classes.content}>
-            <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
-                <ArrowBackIcon />
-              </IconButton>
-            </div>
             <div className={classes.contentBody}>
               <form
                 className={classes.form}

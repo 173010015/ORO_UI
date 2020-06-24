@@ -22,12 +22,6 @@ const schema = {
     length: {
       is: 10
     }
-  },
-  password: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 128
-    }
   }
 };
 
@@ -129,7 +123,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignIn = props => {
+const SignInOtp = props => {
   const { history } = props;
   const classes = useStyles();
   const [formState, setFormState] = useState({
@@ -260,13 +254,13 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  OTP Verification
                 </Typography>
                 <Typography
                   color="textSecondary"
                   gutterBottom
                 >
-                  Sign in with your Phone Number
+                  We will send you a <b>One Time Password</b> on this Phone number.
                 </Typography>
                 <Typography
                   align="center"
@@ -290,20 +284,6 @@ const SignIn = props => {
                   value={formState.values.phoneNo || ''}
                   variant="outlined"
                 />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('password')}
-                  fullWidth
-                  helperText={
-                    hasError('password') ? formState.errors.password[0] : null
-                  }
-                  label="Password"
-                  name="password"
-                  onChange={handleChange}
-                  type="password"
-                  value={formState.values.password || ''}
-                  variant="outlined"
-                />
                 <Button
                   className={classes.signInButton}
                   color="primary"
@@ -313,7 +293,7 @@ const SignIn = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Sign in now
+                  Send OTP
                 </Button>
                 <Typography className ={classes.LinkIconBottom}
                   color="textSecondary"
@@ -332,15 +312,8 @@ const SignIn = props => {
                   color="textSecondary"
                   variant="body1"
                 >
-                  {' '} {''}
+                  {' '}
                   <Link
-                    component={RouterLink}
-                    to="/sign-in/otp"
-                    variant="h6"
-                  >
-                    Login via OTP
-                  </Link>
-                  <Link className ={classes.LinkIconLeft}
                     component={RouterLink}
                     to="/account/password/reset"
                     variant="h6"
@@ -357,8 +330,8 @@ const SignIn = props => {
   );
 };
 
-SignIn.propTypes = {
+SignInOtp.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignIn);
+export default withRouter(SignInOtp);

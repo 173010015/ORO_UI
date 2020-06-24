@@ -15,6 +15,10 @@ import {
 const schema = {
   phoneNo: {
     presence: { allowEmpty: false, message: 'is required' },
+    format:{
+      pattern: "[0-9]+",
+      message: "can only have digits"
+    },
     length: {
       is: 10
     }
@@ -107,8 +111,11 @@ const useStyles = makeStyles(theme => ({
   socialButtons: {
     marginTop: theme.spacing(3)
   },
-  socialIcon: {
-    marginRight: theme.spacing(1)
+  LinkIconLeft: {
+    marginLeft: theme.spacing(5)
+  },
+  LinkIconBottom: {
+    marginBottom: theme.spacing(2)
   },
   sugestion: {
     marginTop: theme.spacing(2)
@@ -123,9 +130,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = props => {
   const { history } = props;
-
   const classes = useStyles();
-
   const [formState, setFormState] = useState({
     isValid: false,
     isValidLogin: true,
@@ -183,6 +188,7 @@ const SignIn = props => {
     })
     .then(data=>{
       if(data.status === "OK"){
+        localStorage.setItem('isAuthenticated',true);
         history.push('/dashboard');
         console.log("how");
       }
@@ -308,7 +314,7 @@ const SignIn = props => {
                 >
                   Sign in now
                 </Button>
-                <Typography
+                <Typography className ={classes.LinkIconBottom}
                   color="textSecondary"
                   variant="body1"
                 >
@@ -319,6 +325,26 @@ const SignIn = props => {
                     variant="h6"
                   >
                     Sign up
+                  </Link>
+                </Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="body1"
+                >
+                  {' '} {''}
+                  <Link
+                    component={RouterLink}
+                    to="/sign-in/otp"
+                    variant="h6"
+                  >
+                    Login via OTP
+                  </Link>
+                  <Link className ={classes.LinkIconLeft}
+                    component={RouterLink}
+                    to="/account/password/reset"
+                    variant="h6"
+                  >
+                   Forgot your Password?
                   </Link>
                 </Typography>
               </form>

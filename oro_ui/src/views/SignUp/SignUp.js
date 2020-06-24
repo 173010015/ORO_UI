@@ -28,11 +28,10 @@ const schema = {
       maximum: 32
     }
   },
- /* email: {
+  phoneNo: {
     presence: { allowEmpty: false, message: 'is required' },
-    email: true,
     length: {
-      maximum: 64
+      is: 10
     }
   },
   password: {
@@ -44,7 +43,7 @@ const schema = {
   policy: {
     presence: { allowEmpty: false, message: 'is required' },
     checked: true
-  }*/
+  }
 };
 
 const useStyles = makeStyles(theme => ({
@@ -257,7 +256,7 @@ const SignUp = props => {
                   color="textSecondary"
                   gutterBottom
                 >
-                  Use your email to create new account
+                  Use your phone number to create new account
                 </Typography>
                 <TextField
                   className={classes.textField}
@@ -289,16 +288,16 @@ const SignUp = props => {
                 />
                 <TextField
                   className={classes.textField}
-                  error={hasError('email')}
+                  error={hasError('phoneNo')}
                   fullWidth
                   helperText={
-                    hasError('email') ? formState.errors.email[0] : null
+                    hasError('phoneNo') ? formState.errors.phoneNo[0] : null
                   }
-                  label="Email address"
-                  name="email"
+                  label="Phone number"
+                  name="phoneNo"
                   onChange={handleChange}
-                  type="text"
-                  value={formState.values.email || ''}
+                  type="tel"
+                  value={formState.values.phoneNo || ''}
                   variant="outlined"
                 />
                 <TextField

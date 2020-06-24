@@ -7,6 +7,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { Profile, SidebarNav} from './components';
 
@@ -55,9 +56,9 @@ const Sidebar = props => {
       icon: <AccountBoxIcon />
     },
     {
-      title: 'Settings',
-      href: '/settings',
-      icon: <SettingsIcon />
+      title: 'Logout',
+      href: '/logout',
+      icon: <ExitToAppIcon />
     }
   ];
 

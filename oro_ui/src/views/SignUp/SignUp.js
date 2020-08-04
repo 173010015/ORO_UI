@@ -19,13 +19,23 @@ const schema = {
   firstName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
-      maximum: 32
+      maximum: 12
+    },
+    format: {
+      pattern: "[a-zA-Z]+",
+      flags: "i",
+      message: "can only contain a-z and A-Z"
     }
   },
   lastName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
-      maximum: 32
+      maximum: 12
+    },
+    format: {
+      pattern: "[a-zA-Z]+",
+      flags: "i",
+      message: "can only contain a-z and A-Z"
     }
   },
   phoneNo: {
@@ -37,8 +47,14 @@ const schema = {
   password: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
-      maximum: 128
+      minimum: 8,
     }
+    //format:{
+     // pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])",
+      //flags: "i",
+     // message: "must contain a upperCase,a digit and a special character"
+    //}
+
   },
   policy: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -185,8 +201,36 @@ const SignUp = props => {
   };
 
   const handleSignUp = event => {
+    let apiUrl = "http://localhost:8080/oro/v1/signup";
+    let headers =new Headers();
+    headers.set('Content-Type','application/json');
+    fetch(apiUrl,{
+      method:'POST',
+      headers: headers,
+      body : JSON.stringify(formState.values)
+    }).then(function(response){
+          if(response.ok){
+            return response.json();
+          }
+          else{
+            throw new Error("something went wrong...");
+          }
+    })
+    .then(data=>{
+      if(data.status === "OK"){
+        localStorage.setItem('isVerified',data.isVerified);
+        history.push('/verify');
+        console.log("how");
+      }
+      else{
+        setFormState(formState =>({
+          ...formState,
+          isVerified: false
+        }));
+        console.log("Jow");
+      }
+    })
     event.preventDefault();
-    history.push('/');
   };
 
   const hasError = field =>

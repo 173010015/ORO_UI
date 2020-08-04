@@ -7,8 +7,12 @@ import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 import {
   SignIn as SignInView,
   SignUp as SignUpView,
-  SignInOtp as SignInOtpView,
-  Dashboard as DashboardView
+  signInOtpRouter as SignInOtpView,
+  Dashboard as DashboardView,
+  AddLoad as AddLoadView,
+  InteractiveList as searchView,
+  Account as AccountView,
+  OtpVerifyRouter as OtpVerifyView
 } from './views';
 
 const Routes = () => {
@@ -37,11 +41,35 @@ const Routes = () => {
         layout={MinimalLayout}
         path="/sign-up"
       />
+       <RouteWithLayout
+        component={OtpVerifyView}
+        exact
+        layout={MinimalLayout}
+        path="/verify"
+      />
        <PrivateRouteWithLayout
         component={DashboardView}
         exact
         layout={MainLayout}
         path="/dashboard"
+      />
+       <PrivateRouteWithLayout
+        component={AddLoadView}
+        exact
+        layout={MainLayout}
+        path="/load/add"
+      />
+      <RouteWithLayout
+        component={searchView}
+        exact
+        layout={MinimalLayout}
+        path="/search"
+      />
+      <RouteWithLayout
+        component={AccountView}
+        exact
+        layout={MainLayout}
+        path="/account"
       />
     </Switch>
   );

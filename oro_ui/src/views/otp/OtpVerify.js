@@ -22,12 +22,6 @@ const schema = {
     length: {
       is: 10
     }
-  },
-  password: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 128
-    }
   }
 };
 
@@ -129,12 +123,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignIn = props => {
+const OtpVerify = props => {
   const { history } = props;
   const classes = useStyles();
   const [formState, setFormState] = useState({
     isValid: false,
-    isValidLogin: true,
+    isValidPhoneNo: true,
+    isVerified: false,
     values: {},
     touched: {},
     errors: {}
@@ -156,7 +151,8 @@ const SignIn = props => {
 
     setFormState(formState => ({
       ...formState,
-      isValidLogin: true,
+      isValidPhoneNo: true,
+      isVerified: false,
       values: {
         ...formState.values,
         [event.target.name]:
@@ -172,7 +168,7 @@ const SignIn = props => {
   };
 
   const handleSignIn = event => {
-    let apiUrl = "https://5a53dcd8-644c-4685-8a3b-042e79d63166.mock.pstmn.io/login";
+    let apiUrl = "https://5a53dcd8-644c-4685-8a3b-042e79d63166.mock.pstmn.io/otp";
     let headers =new Headers();
     headers.set('Content-Type','application/json');
     fetch(apiUrl,{
@@ -189,40 +185,23 @@ const SignIn = props => {
     })
     .then(data=>{
       if(data.status === "OK"){
-        localStorage.setItem('isAuthenticated',true);
-        history.push('/dashboard');
+        setFormState(formState =>({
+          ...formState,
+          isVerified: true
+        }));
         console.log("how");
       }
       else{
         setFormState(formState =>({
           ...formState,
-          isValidLogin: false
+          isValidPhoneNo: false
         }));
         console.log("Jow");
       }
     })
     event.preventDefault();
   };
- /*
- const handleSignIn = event =>{
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  
-  var raw = JSON.stringify({"phoneNo":"8095936882","password":"12345"});
-  
-  var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
-  };
-  
-  fetch("https://006c0939-8bcf-4977-8458-ed53258cdd30.mock.pstmn.io/login", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
- };
-*/
+
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
 
@@ -279,13 +258,13 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  OTP Verification
                 </Typography>
                 <Typography
                   color="textSecondary"
                   gutterBottom
                 >
-                  Sign in with your Phone Number
+                  Enter your 4-digt <b>One Time Password</b> which we have sent to your registered number.
                 </Typography>
                 <Typography
                   align="center"
@@ -293,7 +272,9 @@ const SignIn = props => {
                   color="textSecondary"
                   variant="body1"
                 >
-                  {formState.isValidLogin ? null : <Alert severity="error">Invalid Credentials. Please check</Alert>}
+                  {formState.isValidPhoneNo ? null : <Alert severity="error">Phone Number is not registered. Please check.</Alert>}
+                  
+                  {formState.isVerified ? <otpVerify/> : null}
                 </Typography>
                 <TextField
                   className={classes.textField}
@@ -309,20 +290,6 @@ const SignIn = props => {
                   value={formState.values.phoneNo || ''}
                   variant="outlined"
                 />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('password')}
-                  fullWidth
-                  helperText={
-                    hasError('password') ? formState.errors.password[0] : null
-                  }
-                  label="Password"
-                  name="password"
-                  onChange={handleChange}
-                  type="password"
-                  value={formState.values.password || ''}
-                  variant="outlined"
-                />
                 <Button
                   className={classes.signInButton}
                   color="primary"
@@ -332,9 +299,9 @@ const SignIn = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Sign in now
+                  Verify
                 </Button>
-                <Typography className ={classes.LinkIconBottom}
+                <Typography
                   color="textSecondary"
                   variant="body1"
                 >
@@ -347,26 +314,6 @@ const SignIn = props => {
                     Sign up
                   </Link>
                 </Typography>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  {' '} {''}
-                  <Link
-                    component={RouterLink}
-                    to="/sign-in/otp"
-                    variant="h6"
-                  >
-                    Login via OTP
-                  </Link>
-                  <Link className ={classes.LinkIconLeft}
-                    component={RouterLink}
-                    to="/account/password/reset"
-                    variant="h6"
-                  >
-                   Forgot your Password?
-                  </Link>
-                </Typography>
               </form>
             </div>
           </div>
@@ -376,8 +323,9 @@ const SignIn = props => {
   );
 };
 
-SignIn.propTypes = {
+OtpVerify.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignIn);
+//export default withRouter(OtpVerify);
+export const OtpVerifyRouter = withRouter(OtpVerify);

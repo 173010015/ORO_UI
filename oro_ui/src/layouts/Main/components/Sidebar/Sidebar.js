@@ -42,7 +42,7 @@ const Sidebar = props => {
   const pages = [
     {
       title: 'Add Load',
-      href: '/users',
+      href: '/load/add',
       icon: <AddShoppingCartIcon />
     },
     {

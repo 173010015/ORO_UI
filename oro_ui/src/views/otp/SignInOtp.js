@@ -128,7 +128,8 @@ const SignInOtp = props => {
   const classes = useStyles();
   const [formState, setFormState] = useState({
     isValid: false,
-    isValidLogin: true,
+    isValidPhoneNo: true,
+    isVerified: false,
     values: {},
     touched: {},
     errors: {}
@@ -150,7 +151,8 @@ const SignInOtp = props => {
 
     setFormState(formState => ({
       ...formState,
-      isValidLogin: true,
+      isValidPhoneNo: true,
+      isVerified: false,
       values: {
         ...formState.values,
         [event.target.name]:
@@ -166,7 +168,7 @@ const SignInOtp = props => {
   };
 
   const handleSignIn = event => {
-    let apiUrl = "http://localhost:8080/login";
+    let apiUrl = "https://5a53dcd8-644c-4685-8a3b-042e79d63166.mock.pstmn.io/otp";
     let headers =new Headers();
     headers.set('Content-Type','application/json');
     fetch(apiUrl,{
@@ -183,14 +185,16 @@ const SignInOtp = props => {
     })
     .then(data=>{
       if(data.status === "OK"){
-        localStorage.setItem('isAuthenticated',true);
-        history.push('/dashboard');
+        setFormState(formState =>({
+          ...formState,
+          isVerified: true
+        }));
         console.log("how");
       }
       else{
         setFormState(formState =>({
           ...formState,
-          isValidLogin: false
+          isValidPhoneNo: false
         }));
         console.log("Jow");
       }
@@ -268,7 +272,9 @@ const SignInOtp = props => {
                   color="textSecondary"
                   variant="body1"
                 >
-                  {formState.isValidLogin ? null : <Alert severity="error">Invalid Credentials. Please check</Alert>}
+                  {formState.isValidPhoneNo ? null : <Alert severity="error">Phone Number is not registered. Please check.</Alert>}
+                  
+                  {formState.isVerified ? <otpVerify/> : null}
                 </Typography>
                 <TextField
                   className={classes.textField}
@@ -295,7 +301,7 @@ const SignInOtp = props => {
                 >
                   Send OTP
                 </Button>
-                <Typography className ={classes.LinkIconBottom}
+                <Typography
                   color="textSecondary"
                   variant="body1"
                 >
@@ -306,19 +312,6 @@ const SignInOtp = props => {
                     variant="h6"
                   >
                     Sign up
-                  </Link>
-                </Typography>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/account/password/reset"
-                    variant="h6"
-                  >
-                   Forgot your Password?
                   </Link>
                 </Typography>
               </form>
@@ -334,4 +327,5 @@ SignInOtp.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignInOtp);
+//export default withRouter(SignInOtp);
+export const signInOtpRouter = withRouter(SignInOtp);
